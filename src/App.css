@@ -22,13 +22,17 @@
 }
 
 /* ─── Fondos por pantalla ─────────────────────────── */
-.app--choice {
-  background-image:
-    linear-gradient(rgba(13, 12, 11, 0.62), rgba(13, 12, 11, 0.72)),
-    url('/background/img1.jpg');
+.app--choice::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url('/background/img1.jpg');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+  z-index: 0;
+  opacity: 0.38;
+  pointer-events: none;
 }
 
 .app > * {
@@ -522,14 +526,28 @@
 
 /* ─── Responsive ──────────────────────────────────── */
 @media (max-width: 720px) {
+  .app {
+    align-items: flex-start;
+    padding-top: 2.5rem;
+  }
+
   .choice-grid {
     grid-template-columns: 1fr;
-    max-width: 360px;
+    max-width: 380px;
     margin: 0 auto;
   }
 
+  .choice-header {
+    margin-bottom: 1.75rem;
+  }
+
   .choice-title {
-    font-size: 2rem;
+    font-size: 1.9rem;
+  }
+
+  .branch-card--has-video,
+  .branch-card--has-bg {
+    min-height: 200px;
   }
 
   .invitation {
@@ -552,14 +570,33 @@
 @media (max-width: 460px) {
   .app {
     padding: 1rem;
+    padding-top: 2rem;
   }
 
   .choice-title {
-    font-size: 1.75rem;
+    font-size: 1.65rem;
   }
 
   .intro-wings {
     width: 110px;
+  }
+
+  .branch-card--has-video,
+  .branch-card--has-bg {
+    min-height: 180px;
+  }
+}
+
+/* "Elegir →" siempre visible en dispositivos touch */
+@media (hover: none) {
+  .branch-cta {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Desactivar drift en móvil para ahorrar GPU */
+  .app::before {
+    animation: none;
   }
 }
 
