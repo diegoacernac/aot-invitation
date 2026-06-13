@@ -22,7 +22,7 @@ export default function BranchChoice({ onSelect }) {
     <>
       <motion.div className="choice" {...screenTransition}>
         <div className="choice-header">
-          <h1 className="choice-title">Eres mi cadete.</h1>
+          <h1 className="choice-title">Fiorella, eres mi cadete.</h1>
           <div className="choice-divider" />
           <p className="choice-subtitle">Elige tu destino.</p>
         </div>

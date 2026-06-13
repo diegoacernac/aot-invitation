@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import { useEffect, useState } from 'react';
 
 const WingsSVG = () => (
   <svg viewBox="0 0 200 90" fill="currentColor" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
@@ -27,7 +28,36 @@ const screenTransition = {
   transition: { duration: 0.5 },
 };
 
+const TEXT = 'En un mundo donde los muros protegen lo que más importa...';
+
+function Typewriter({ delay = 900, onDone }) {
+  const [displayed, setDisplayed] = useState('');
+  const [done, setDone] = useState(false);
+
+  useEffect(() => {
+    let i = 0;
+    const timeout = setTimeout(() => {
+      const interval =  setInterval(() => {
+        i++;
+        setDisplayed(TEXT.slice(0, i));
+        if ( i >= TEXT.length) { clearInterval(interval); setDone(true); onDone?.(); }
+      }, 42);
+      return () => clearInterval(interval);
+    }, delay);
+    return () => clearTimeout(timeout);
+  }, [delay]);
+
+  return (
+    <p className='intro-text'>
+      {displayed}
+      {!done && <span className='tw-cursor' aria-hidden='true' />}
+    </p>
+  );
+}
+
 export default function Intro({ onStart }) {
+  const [done, setDone] = useState(false);
+
   return (
     <motion.div className="intro" {...screenTransition}>
       <motion.div
@@ -50,20 +80,13 @@ export default function Intro({ onStart }) {
         <WingsSVG />
       </motion.div>
 
-      <motion.p
-        className="intro-text"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.65, duration: 0.85 }}
-      >
-        En un mundo donde los muros protegen lo que más importa...
-      </motion.p>
+      <Typewriter delay={900} onDone={() => setDone(true)} />
 
       <motion.button
         className="btn-primary"
         onClick={onStart}
         initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
+        animate={{ opacity: done ? 1 : 0 }}
         transition={{ delay: 1.6, duration: 0.6 }}
         whileHover={{ scale: 1.02 }}
         whileTap={{ scale: 0.97 }}

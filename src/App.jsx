@@ -5,6 +5,7 @@ import Intro from './components/Intro';
 import BranchChoice from './components/BranchChoice';
 import Invitation from './components/Invitation';
 import './App.css';
+import Particles from './components/Particles';
 
 export default function App() {
   const [screen, setScreen] = useState('intro');
@@ -23,6 +24,7 @@ export default function App() {
 
   return (
     <main className={`app app--${screen}`}>
+      <Particles />
       <AudioPlayer shouldPlay={musicStarted} />
       <AnimatePresence mode="wait">
         {screen === 'intro' && (
