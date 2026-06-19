@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 const WingsSVG = () => (
   <svg viewBox="0 0 200 90" fill="currentColor" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
@@ -33,30 +33,42 @@ const TEXT = 'En un mundo donde los muros protegen lo que más importa...';
 function Typewriter({ delay = 900, onDone }) {
   const [displayed, setDisplayed] = useState('');
   const [done, setDone] = useState(false);
+  const onDoneRef = useRef(onDone);
+  onDoneRef.current = onDone;
 
   useEffect(() => {
+    let interval;
     let i = 0;
+
     const timeout = setTimeout(() => {
-      const interval =  setInterval(() => {
+      interval = setInterval(() => {
         i++;
         setDisplayed(TEXT.slice(0, i));
-        if ( i >= TEXT.length) { clearInterval(interval); setDone(true); onDone?.(); }
+        if (i >= TEXT.length) {
+          clearInterval(interval);
+          setDone(true);
+          onDoneRef.current?.();
+        }
       }, 42);
-      return () => clearInterval(interval);
     }, delay);
-    return () => clearTimeout(timeout);
+
+    return () => {
+      clearTimeout(timeout);
+      if (interval) clearInterval(interval);
+    };
   }, [delay]);
 
   return (
-    <p className='intro-text'>
+    <p className="intro-text">
       {displayed}
-      {!done && <span className='tw-cursor' aria-hidden='true' />}
+      {!done && <span className="tw-cursor" aria-hidden="true" />}
     </p>
   );
 }
 
-export default function Intro({ onStart }) {
+export default function Intro({ onStart, finished = false }) {
   const [done, setDone] = useState(false);
+  const handleTypewriterDone = useCallback(() => setDone(true), []);
 
   return (
     <motion.div className="intro" {...screenTransition}>
@@ -80,19 +92,30 @@ export default function Intro({ onStart }) {
         <WingsSVG />
       </motion.div>
 
-      <Typewriter delay={900} onDone={() => setDone(true)} />
+      <Typewriter delay={900} onDone={handleTypewriterDone} />
 
-      <motion.button
-        className="btn-primary"
-        onClick={onStart}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: done ? 1 : 0 }}
-        transition={{ delay: 1.6, duration: 0.6 }}
-        whileHover={{ scale: 1.02 }}
-        whileTap={{ scale: 0.97 }}
-      >
-        Comenzar
-      </motion.button>
+      {finished ? (
+        <motion.p
+          className="intro-closing"
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: done ? 1 : 0, y: done ? 0 : 8 }}
+          transition={{ delay: 1.6, duration: 0.6 }}
+        >
+          Tú y yo nos encargaremos de explorarlo juntos
+        </motion.p>
+      ) : (
+        <motion.button
+          className="btn-primary"
+          onClick={onStart}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: done ? 1 : 0 }}
+          transition={{ delay: 1.6, duration: 0.6 }}
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.97 }}
+        >
+          Comenzar
+        </motion.button>
+      )}
     </motion.div>
   );
 }

@@ -1,0 +1,1 @@
+export const LETTER_ACCESS_KEY = '19062026';

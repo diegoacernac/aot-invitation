@@ -10,8 +10,8 @@ export const branches = [
     plan: 'cine',
     title: 'Tu misión: cine',
     message:
-      'Los valientes van más allá del muro. Te invito al cine el jueves 18 de junio por la noche.',
-    cta: 'Acepto la invitación',
+      'Los valientes van más allá del muro — y el cine lo dejamos para cuando podamos salir, en una fecha que acordemos. Por ahora, lo que importa es estar juntos: hoy disfrutemos el tiempo en tu casa.',
+    cta: 'Acepto la misión',
   },
   {
     id: 'police',
@@ -24,8 +24,8 @@ export const branches = [
     plan: 'pollito',
     title: 'Tu misión: cenar pollito',
     message:
-      'El distrito interior te espera. Cenamos pollito el jueves 18 de junio por la noche - sé que te gusta.',
-    cta: '¿Me acompañas?',
+      'El distrito interior te espera — y ese pollito queda pendiente para cuando salgamos, en una fecha que acordemos. Hoy no importa salir: pasemos el rato en tu casa.',
+    cta: 'Me apunto',
   },
   {
     id: 'garrison',
@@ -38,7 +38,7 @@ export const branches = [
     plan: 'casual',
     title: 'Tu misión: plan casual',
     message:
-      'Proteger el muro es mejor en compañía. Salida casual el jueves 18 de junio por la noche - helado, café o lo que se nos ocurra.',
-    cta: 'Me apunto',
+      'Proteger el muro es mejor en compañía — el plan casual (helado, café o lo que se nos ocurra) lo dejamos para después, cuando podamos salir. Por ahora, disfrutemos en tu casa.',
+    cta: 'Vamos',
   },
-]
+];

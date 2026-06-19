@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { branches } from '../data/branches';
+import { saveChoice } from '../lib/choiceStorage';
 
 const screenTransition = {
   initial: { opacity: 0, y: 30 },
@@ -10,13 +11,24 @@ const screenTransition = {
 };
 
 export default function BranchChoice({ onSelect }) {
+  const [phase, setPhase] = useState('idle');
+  const [selected, setSelected] = useState(null);
   const [assigning, setAssigning] = useState(null);
 
   const handleClick = (branch) => {
-    if (assigning) return;
-    setAssigning(branch);
-    setTimeout(() => onSelect(branch), 1300);
+    if (phase !== 'idle') return;
+
+    setSelected(branch);
+    setPhase('locking');
+    saveChoice(branch.id);
+
+    setTimeout(() => {
+      setAssigning(branch);
+      setTimeout(() => onSelect(branch), 1300);
+    }, 550);
   };
+
+  const isLocking = phase === 'locking';
 
   return (
     <>
@@ -28,47 +40,56 @@ export default function BranchChoice({ onSelect }) {
         </div>
 
         <div className="choice-grid">
-          {branches.map((branch, i) => (
-            <motion.button
-              key={branch.id}
-              className={`branch-card${
-                branch.cardVideo
-                  ? ' branch-card--has-video'
-                  : branch.cardBg
-                    ? ' branch-card--has-bg'
-                    : ''
-              }`}
-              style={{
-                '--accent': branch.accent,
-                ...(branch.cardBg && !branch.cardVideo && {
-                  '--card-bg': `url(${branch.cardBg})`,
-                }),
-              }}
-              onClick={() => handleClick(branch)}
-              disabled={!!assigning}
-              initial={{ opacity: 0, y: 45 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 + i * 0.15, type: 'spring', stiffness: 110 }}
-              whileHover={assigning ? {} : { scale: 1.03 }}
-              whileTap={assigning ? {} : { scale: 0.97 }}
-            >
-              {branch.cardVideo && (
-                <video
-                  className="branch-card-video"
-                  src={branch.cardVideo}
-                  poster={branch.cardBg}
-                  autoPlay
-                  muted
-                  loop
-                  playsInline
-                />
-              )}
-              <img src={branch.icon} alt={branch.name} className="branch-icon-img" />
-              <span className="branch-name">{branch.name}</span>
-              <span className="branch-sub">{branch.subtitle}</span>
-              <span className="branch-cta">Elegir →</span>
-            </motion.button>
-          ))}
+          {branches.map((branch, i) => {
+            const isSelected = selected?.id === branch.id;
+
+            return (
+              <motion.button
+                key={branch.id}
+                layout
+                className={`branch-card${
+                  branch.cardVideo
+                    ? ' branch-card--has-video'
+                    : branch.cardBg
+                      ? ' branch-card--has-bg'
+                      : ''
+                }${isLocking && isSelected ? ' branch-card--selected' : ''}`}
+                style={{
+                  '--accent': branch.accent,
+                  ...(branch.cardBg && !branch.cardVideo && {
+                    '--card-bg': `url(${branch.cardBg})`,
+                  }),
+                }}
+                onClick={() => handleClick(branch)}
+                disabled={phase !== 'idle'}
+                initial={{ opacity: 0, y: 45 }}
+                animate={{
+                  opacity: isLocking ? (isSelected ? 1 : 0) : 1,
+                  scale: isLocking ? (isSelected ? 1.04 : 0.88) : 1,
+                  y: isLocking && !isSelected ? 24 : 0,
+                }}
+                transition={{ duration: 0.45, delay: isLocking ? 0 : 0.2 + i * 0.15 }}
+                whileHover={phase === 'idle' ? { scale: 1.03 } : {}}
+                whileTap={phase === 'idle' ? { scale: 0.97 } : {}}
+              >
+                {branch.cardVideo && (
+                  <video
+                    className="branch-card-video"
+                    src={branch.cardVideo}
+                    poster={branch.cardBg}
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                  />
+                )}
+                <img src={branch.icon} alt={branch.name} className="branch-icon-img" />
+                <span className="branch-name">{branch.name}</span>
+                <span className="branch-sub">{branch.subtitle}</span>
+                <span className="branch-cta">Elegir →</span>
+              </motion.button>
+            );
+          })}
         </div>
       </motion.div>
 
