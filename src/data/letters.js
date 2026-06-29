@@ -6,7 +6,7 @@ Desde la primera vez que tuve contacto contigo quise saber más de ti, explorar 
 
 Por otro lado, y a pesar de mis falencias, siempre he tenido claro, desde aquel 28 de noviembre de 2025 —cuando besé tus labios por primera vez y cuando pudimos amarnos por primera vez—, que a tu lado quería construir algo; que mis batallas y las tuyas podían ser ganadas si intentábamos formar un equipo capaz de luchar como un ejército.
 
-Los días y las semanas transcurren, y quizá no puedo hacerlo exactamente como me gustaría, pero no es necesario esperar más. Quiero que hoy, 19 de junio, tú y yo formalicemos este vínculo tan bello, y que me concedas el privilegio de ser tu novio.
+Los días y las semanas transcurren, y quizá no puedo hacerlo exactamente como me gustaría, pero no es necesario esperar más. Quiero que hoy, 29 de junio, tú y yo formalicemos este vínculo tan bello, y que me concedas el privilegio de ser tu novio.
 
 Con amor,
 
